@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  node:
+    image: thecodingmachine/nodejs:v2-20-bullseye
+    container_name: node
+    command: npm run dev
+    environment:
+      DEBUG: "*"
+      NODE_ENV: development
+      PORT: 3000
+      STARTUP_COMMANDE_1: npm install
+    volumes:
+      - ./app/:/usr/src/app
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.backend.entrypoints=web"
+    #   - "traefik.http.routers.backend.rule=Host(`backend.arbrelien.localhost`)"
+    #   - "traefik.http.routers.backend.service=backend"
+    #   - "traefik.http.services.backend.loadbalancer.server.port=3000"
+    ports:
+      - "3000:3000"   
+      - "5173:5173"   
+      
+  db:
+    image: mysql:latest
+    # restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: flinko
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:  
