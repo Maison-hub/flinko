@@ -25,7 +25,9 @@ services:
     image: mysql:latest
     # restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_RANDOM_ROOT_PASSWORD: "no"
       MYSQL_DATABASE: flinko
       MYSQL_USER: user
       MYSQL_PASSWORD: user
